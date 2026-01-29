@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You - QuickBite</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h1>✅ Order Confirmed</h1>
+  <p>Thanks for ordering with QuickBite</p>
+</div>
+
+<div class="container">
+
+<h2>🧾 Receipt</h2>
+<p><b>Order ID:</b> <span id="orderId"></span></p>
+<p><b>Date & Time:</b> <span id="dateTime"></span></p>
+<p><b>Name:</b> <span id="cust"></span></p>
+
+<h3>📌 Ordered Items</h3>
+<table class="billTable">
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th>Qty</th>
+<th>Total</th>
+</tr>
+<tbody id="itemsBody"></tbody>
+</table>
+
+<h2>💰 Total Paid: ₹ <span id="grandTotal"></span></h2>
+
+<hr>
+
+<h2>📍 Order Tracking</h2>
+<div class="tracking">
+  <div class="step active" id="s1">✅ Confirmed</div>
+  <div class="step" id="s2">👨‍🍳 Preparing</div>
+  <div class="step" id="s3">🛵 Out for Delivery</div>
+  <div class="step" id="s4">📦 Delivered</div>
+</div>
+
+<hr>
+
+<h2>🛰️ Delivery Boy Live Tracking</h2>
+<div class="mapBox">
+  <div class="marker" id="marker">🛵</div>
+  <p class="mapText">Delivery partner is moving towards your location...</p>
+</div>
+
+<br>
+
+<button class="btn" onclick="window.print()">Print Receipt</button>
+<button class="btn" onclick="goHome()">Back to Home</button>
+<button class="whatsapp-btn" onclick="sendWhatsApp()">📲 WhatsApp Receipt</button>
+
+<p class="footer">© 2025 QuickBite Food Delivery</p>
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+
+let customer = urlParams.get("customer") || "";
+document.getElementById("cust").innerText = customer;
+
+document.getElementById("orderId").innerText =
+  "QB-" + Math.floor(10000 + Math.random() * 90000);
+
+document.getElementById("dateTime").innerText =
+  new Date().toLocaleString();
+
+let prices = {
+  "Pizza": 250,
+  "Burger": 50,
+  "Pasta": 80,
+  "Sandwich": 60,
+  "Cold Drink": 45
+};
+
+let selectedItems = urlParams.getAll("item");
+let itemsBody = document.getElementById("itemsBody");
+let grandTotal = 0;
+
+function getQty(item) {
+  if (item === "Pizza") return parseInt(urlParams.get("pizzaQty")) || 1;
+  if (item === "Burger") return parseInt(urlParams.get("burgerQty")) || 1;
+  if (item === "Pasta") return parseInt(urlParams.get("pastaQty")) || 1;
+  if (item === "Sandwich") return parseInt(urlParams.get("sandwichQty")) || 1;
+  if (item === "Cold Drink") return parseInt(urlParams.get("coldDrinkQty")) || 1;
+  return 1;
+}
+
+selectedItems.forEach(item => {
+  let qty = getQty(item);
+  let price = prices[item];
+  let total = qty * price;
+  grandTotal += total;
+
+  itemsBody.innerHTML += `
+    <tr>
+      <td>${item}</td>
+      <td>₹${price}</td>
+      <td>${qty}</td>
+      <td>₹${total}</td>
+    </tr>
+  `;
+});
+
+document.getElementById("grandTotal").innerText = grandTotal;
+
+function goHome() {
+  window.location.href = "index.html";
+}
+
+function sendWhatsApp() {
+  let phone = prompt("Enter WhatsApp number (10 digits):");
+  if (!phone) return;
+
+  phone = phone.replace(/\D/g, "");
+  if (phone.length === 12 && phone.startsWith("91")) phone = phone.slice(2);
+
+  if (phone.length !== 10) {
+    alert("Invalid phone number!");
+    return;
+  }
+
+  let message = encodeURIComponent(
+    `QuickBite Receipt\nName: ${customer}\nTotal Paid: ₹${grandTotal}\nThank you!`
+  );
+
+  window.location.href = "https://wa.me/91" + phone + "?text=" + message;
+}
+
+/* Tracking animation */
+let steps = ["s1","s2","s3","s4"];
+let currentStep = 0;
+function updateTracking(){
+  steps.forEach(id => document.getElementById(id).classList.remove("active"));
+  for(let i=0;i<=currentStep;i++){
+    document.getElementById(steps[i]).classList.add("active");
+  }
+  if(currentStep<steps.length-1) currentStep++;
+}
+updateTracking();
+setInterval(updateTracking,3000);
+
+/* Delivery bike movement */
+let marker = document.getElementById("marker");
+let pos = 10;
+setInterval(()=>{
+  pos+=10;
+  if(pos>260) pos=10;
+  marker.style.left=pos+"px";
+},700);
+
+/* Confetti */
+const canvas = document.getElementById("confettiCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let confetti = [];
+for(let i=0;i<150;i++){
+ confetti.push({
+  x: Math.random()*canvas.width,
+  y: Math.random()*canvas.height - canvas.height,
+  r: Math.random()*6 + 2,
+  d: Math.random()*3 + 1
+ });
+}
+
+function drawConfetti(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ confetti.forEach(c=>{
+   ctx.beginPath();
+   ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+   ctx.fill();
+   c.y+=c.d;
+   if(c.y>canvas.height) c.y=-10;
+ });
+ requestAnimationFrame(drawConfetti);
+}
+
+drawConfetti();
+setTimeout(()=>{canvas.style.display="none";},5000);
+</script>
+
+</body>
+</html>

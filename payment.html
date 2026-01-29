@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Payment - QuickBite</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h1>💳 Payment</h1>
+  <p>Complete your payment securely</p>
+</div>
+
+<div class="container">
+<p><b>Name:</b> <span id="cust"></span></p>
+<p><b>Address:</b> <span id="address"></span></p>
+
+<table class="billTable">
+<tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr>
+<tbody id="billBody"></tbody>
+</table>
+
+<h2>💰 Grand Total: ₹ <span id="grandTotal"></span></h2>
+
+<button class="pay-btn" onclick="showQR()">Pay Now</button>
+<button class="whatsapp-btn" onclick="sendWhatsApp()">📲 Send Order on WhatsApp</button>
+
+<div id="qrBox" class="qr-box">
+  <p>Scan this QR to complete payment</p>
+  <img src="qr.png" class="qr">
+  <p><b>Pay Amount:</b> ₹ <span id="payAmount"></span></p>
+  <button class="btn" onclick="processPayment()">Payment Done</button>
+</div>
+</div>
+
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="loader"></div>
+  <p>Processing Payment... Please wait</p>
+</div>
+
+<script>
+const urlParams=new URLSearchParams(window.location.search);
+cust.innerText=urlParams.get("customer")||"";
+address.innerText=urlParams.get("address")||"";
+
+let prices={"Pizza":250,"Burger":50,"Pasta":80,"Sandwich":60,"Cold Drink":45};
+let items=urlParams.getAll("item");
+let total=0;
+
+function getQty(item){
+ if(item==="Pizza") return parseInt(urlParams.get("pizzaQty"))||1;
+ if(item==="Burger") return parseInt(urlParams.get("burgerQty"))||1;
+ if(item==="Pasta") return parseInt(urlParams.get("pastaQty"))||1;
+ if(item==="Sandwich") return parseInt(urlParams.get("sandwichQty"))||1;
+ if(item==="Cold Drink") return parseInt(urlParams.get("coldDrinkQty"))||1;
+ return 1;
+}
+
+items.forEach(item=>{
+ let qty=getQty(item);
+ let t=prices[item]*qty;
+ total+=t;
+ billBody.innerHTML+=`<tr><td>${item}</td><td>₹${prices[item]}</td><td>${qty}</td><td>₹${t}</td></tr>`;
+});
+
+grandTotal.innerText=total;
+payAmount.innerText=total;
+
+function showQR(){qrBox.style.display="block";}
+
+function sendWhatsApp(){
+ let phone=prompt("Enter WhatsApp number (10 digits):");
+ if(!phone)return;
+ phone=phone.replace(/\D/g,"");
+ if(phone.length===12&&phone.startsWith("91"))phone=phone.slice(2);
+ if(phone.length!==10){alert("Invalid number");return;}
+ let msg=encodeURIComponent(`QuickBite Order\nName: ${cust.innerText}\nAddress: ${address.innerText}\nTotal: ₹${total}`);
+ window.location.href="https://wa.me/91"+phone+"?text="+msg;
+}
+
+function processPayment(){
+ loadingOverlay.style.display="flex";
+ setTimeout(()=>{window.location.href="thankyou.html"+window.location.search},2500);
+}
+</script>
+
+</body>
+</html>

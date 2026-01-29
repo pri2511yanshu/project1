@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickBite Food Delivery</title>
+<link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h1>🍔 QuickBite</h1>
+  <p>Fast • Fresh • Delivered</p>
+</div>
+
+<div class="container">
+<form id="orderForm" action="payment.html" method="get">
+
+<h2 class="title">🛒 Customer Details</h2>
+<div class="formBox">
+  <label>Customer Name:</label>
+  <input type="text" name="customer" required>
+  <label>Delivery Address:</label>
+  <textarea name="address" rows="3" required></textarea>
+</div>
+
+<hr>
+<h2 class="title">📋 Select Menu Items</h2>
+
+<!-- Pizza -->
+<div class="card"><label class="itemRow">
+<input type="checkbox" class="chk" name="item" value="Pizza" onchange="toggleQty(this,'pizzaQty');highlightCard(this)">
+<span class="itemName">Pizza</span><span class="itemPrice">₹250</span>
+</label><div id="pizzaQtyBox" class="qtyBox">Qty:
+<input type="number" name="pizzaQty" min="1" value="1"></div></div>
+
+<!-- Burger -->
+<div class="card"><label class="itemRow">
+<input type="checkbox" class="chk" name="item" value="Burger" onchange="toggleQty(this,'burgerQty');highlightCard(this)">
+<span class="itemName">Burger</span><span class="itemPrice">₹50</span>
+</label><div id="burgerQtyBox" class="qtyBox">Qty:
+<input type="number" name="burgerQty" min="1" value="1"></div></div>
+
+<!-- Pasta -->
+<div class="card"><label class="itemRow">
+<input type="checkbox" class="chk" name="item" value="Pasta" onchange="toggleQty(this,'pastaQty');highlightCard(this)">
+<span class="itemName">Pasta</span><span class="itemPrice">₹80</span>
+</label><div id="pastaQtyBox" class="qtyBox">Qty:
+<input type="number" name="pastaQty" min="1" value="1"></div></div>
+
+<!-- Sandwich -->
+<div class="card"><label class="itemRow">
+<input type="checkbox" class="chk" name="item" value="Sandwich" onchange="toggleQty(this,'sandwichQty');highlightCard(this)">
+<span class="itemName">Sandwich</span><span class="itemPrice">₹60</span>
+</label><div id="sandwichQtyBox" class="qtyBox">Qty:
+<input type="number" name="sandwichQty" min="1" value="1"></div></div>
+
+<!-- Cold Drink -->
+<div class="card"><label class="itemRow">
+<input type="checkbox" class="chk" name="item" value="Cold Drink" onchange="toggleQty(this,'coldDrinkQty');highlightCard(this)">
+<span class="itemName">Cold Drink</span><span class="itemPrice">₹45</span>
+</label><div id="coldDrinkQtyBox" class="qtyBox">Qty:
+<input type="number" name="coldDrinkQty" min="1" value="1"></div></div>
+
+<p id="errorMsg" class="error"></p>
+<button type="submit" class="btn">Order Now</button>
+
+</form>
+</div>
+
+<script>
+function toggleQty(c,n){document.getElementById(n+"Box").style.display=c.checked?"block":"none";}
+function highlightCard(c){c.closest(".card").classList.toggle("selected",c.checked);}
+document.getElementById("orderForm").addEventListener("submit",e=>{
+ if(document.querySelectorAll(".chk:checked").length===0){
+  e.preventDefault(); errorMsg.innerText="❌ Please select at least 1 item!";
+ }
+});
+</script>
+
+</body>
+</html>

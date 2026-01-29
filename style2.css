@@ -1,0 +1,264 @@
+body{
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff8e1;
+  color: #333;
+}
+
+.navbar{
+  background: #d32f2f;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+.navbar h1{
+  margin: 0;
+  font-size: 32px;
+}
+
+.navbar p{
+  margin: 5px 0 0;
+  font-size: 14px;
+}
+
+.container{
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.title{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.card{
+  background: white;
+  padding: 15px;
+  margin: 12px 0;
+  border-radius: 12px;
+  box-shadow: 0px 0px 8px rgba(0,0,0,0.15);
+}
+
+.card.selected{
+  border: 2px solid #2e7d32;
+  background: #e8f5e9;
+}
+
+.itemRow{
+  display: flex;
+  align-items: center;     /* ✅ checkbox center */
+  gap: 12px;
+  font-size: 18px;
+  cursor: pointer;         /* ✅ full row clickable */
+  padding: 8px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.itemRow:hover{
+  background: #fff3cd;
+}
+
+.itemRow input[type="checkbox"]{
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.itemName{
+  flex: 1;
+}
+
+.itemPrice{
+  font-weight: bold;
+  color: #388e3c;
+}
+
+.qtyBox{
+  display: none;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.formBox{
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+}
+
+input, textarea{
+  width: 95%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.btn{
+  background: #d32f2f;
+  color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover{
+  background: #b71c1c;
+}
+
+.pay-btn{
+  background: #2e7d32;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.pay-btn:hover{
+  background: #1b5e20;
+}
+
+.whatsapp-btn{
+  background: #25D366;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.billTable{
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  background: white;
+}
+
+.billTable th, .billTable td{
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.qr-box{
+  display: none;
+  text-align: center;
+  margin-top: 15px;
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 12px rgba(0,0,0,0.2);
+}
+
+.qr{
+  width: 200px;
+  margin-top: 10px;
+}
+
+.error{
+  color: red;
+  font-weight: bold;
+  text-align: center;
+}
+
+.tracking{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.step{
+  flex: 1;
+  background: #ddd;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.step.active{
+  background: #2e7d32;
+  color: white;
+}
+
+.footer{
+  text-align: center;
+  margin-top: 30px;
+  color: gray;
+}
+/* ✅ Loading overlay */
+.loading-overlay{
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.loader{
+  width: 60px;
+  height: 60px;
+  border: 6px solid #ddd;
+  border-top: 6px solid #2e7d32;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+@keyframes spin{
+  0%{ transform: rotate(0deg); }
+  100%{ transform: rotate(360deg); }
+}
+
+/* ✅ Fake Map tracking */
+.mapBox{
+  position: relative;
+  width: 300px;
+  height: 120px;
+  margin: auto;
+  background: #e3f2fd;
+  border-radius: 12px;
+  border: 2px solid #90caf9;
+  overflow: hidden;
+}
+
+.marker{
+  position: absolute;
+  top: 45px;
+  left: 10px;
+  font-size: 30px;
+  transition: 0.6s;
+}
+
+.mapText{
+  text-align: center;
+  font-size: 14px;
+  padding-top: 85px;
+  color: #1565c0;
+}
+
+/* ✅ Confetti canvas */
+#confettiCanvas{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
